@@ -1,21 +1,19 @@
+import React from "react";
 import {
-  View,
-  FlatList,
   StyleSheet,
+  FlatList,
   ActivityIndicator,
   Platform,
 } from "react-native";
-import React from "react";
 import PokemonCard from "./PokemonCard";
 
-export default function PokemonList({ pokemons, loadPokemons, isNext }) {
-  const loadMore = async () => {
-    await loadPokemons();
+export default function PokemonList(props) {
+  const { pokemons, loadPokemons, isNext } = props;
+
+  const laodMore = () => {
+    loadPokemons();
   };
-  console.log(
-    "🚀 ~ file: PokemonList.js:16 ~ PokemonList ~ Platform.OS:",
-    Platform.OS
-  );
+
   return (
     <FlatList
       data={pokemons}
@@ -23,8 +21,8 @@ export default function PokemonList({ pokemons, loadPokemons, isNext }) {
       showsVerticalScrollIndicator={false}
       keyExtractor={(pokemon) => String(pokemon.id)}
       renderItem={({ item }) => <PokemonCard pokemon={item} />}
-      contentContainerStyle={styles.flatListContainer}
-      onEndReached={isNext && loadMore}
+      contentContainerStyle={styles.flatListContentContainer}
+      onEndReached={isNext && laodMore}
       onEndReachedThreshold={0.1}
       ListFooterComponent={
         isNext && (
@@ -40,7 +38,7 @@ export default function PokemonList({ pokemons, loadPokemons, isNext }) {
 }
 
 const styles = StyleSheet.create({
-  flatListContainer: {
+  flatListContentContainer: {
     paddingHorizontal: 5,
     marginTop: Platform.OS === "android" ? 30 : 0,
   },
